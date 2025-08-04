@@ -63,6 +63,11 @@ export abstract class BaseDrag extends BaseEdit {
   };
 
   onMouseDown(event: AnyEvent): MapHandlerReturnData {
+    // Skip drag handling if this is a control-click (used for right-click on Mac)
+    if (isMapPointerEvent(event) && event.originalEvent?.ctrlKey) {
+      return { next: true };
+    }
+
     this.featureData = this.gm.features.getFeatureByMouseEvent({
       event,
       sourceNames: [SOURCES.main],

@@ -103,7 +103,9 @@ export class ShapeMarkersHelper extends BaseHelper {
     if (!isMapPointerEvent(event, { warning: true }) || !allowedEventNames.includes(event.type)) {
       return { next: true };
     }
-    if (event.type === 'mousedown' && event.originalEvent.button !== 0) {
+
+    // Skip drag handling if this is a control-click (used for right-click on Mac)
+    if (event.type === 'mousedown' && (event.originalEvent.button !== 0 || event.originalEvent?.ctrlKey)) {
       // todo: check for right button click in other places like this
       return { next: true };
     }
